@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+<title>Novo Post</title>
+{% endblock %}
+
+
+
+{% block content %}
+
+<h1> Novo Post </h1>
+<br/><br/>
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p }}
+            <button type="submit" class="save btn btn-secondary" href="{% url 'home' %}">Postar</button>
+        </form>
+    </div>
+{% endblock %}

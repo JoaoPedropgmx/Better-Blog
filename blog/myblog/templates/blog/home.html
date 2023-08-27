@@ -1,17 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Posts</h1>
-    <ul>
-    {% for post in object_list %}
-        <li><a href="{% url 'post-details' post.pk %}">{{post.titulo}} - {{post.autor}}</a><br/>
-        {{post.texto}}</li>
-    {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'blog/base.html' %}
+
+{% block title %}
+<title>Página Inicial</title>
+{% endblock %}
+
+{% block content %}
+<ul>
+{% for post in object_list %}
+    {% if post.data_publicacao != None %}
+    <li><a href="{% url 'post-details' post.pk %}">{{post.titulo}}</a> - {{post.autor.first_name}}
+        {{ post.autor.last_name}} - 
+        <small>
+            <a href="{% url 'editar_post' post.pk %}">Editar</a> |
+            <a href="{% url 'deletar_post' post.pk %}">Deletar</a><br/>
+        </small>
+    {{post.texto}}</li>
+    {% endif %}
+{% endfor %}
+</ul>
+{% endblock %}
