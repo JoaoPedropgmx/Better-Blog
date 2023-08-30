@@ -4,15 +4,20 @@
 <title>{{post.titulo_tag}}</title>
 {% endblock %}
 
+
 {% block content %}
 <h1>{{post.titulo}}</h1>
-<small>Publicado: {{ post.data_publicacao }} - 
-    <a href="{% url 'editar_post' post.pk %}">Editar</a> - 
+<small>Publicado: {{ post.data_publicacao }}
+    {% if user.is_authenticated %}
+     - <a href="{% url 'editar_post' post.pk %}">Editar</a> - 
     <a href="{% url 'deletar_post' post.pk %}">Deletar</a><br/>
+    {% endif %}
+    <brl/>
+    Por: {{post.autor.first_name}} {{post.autor.last_name}}
 </small><br/>
 <hr>
 <br/>
-{{post.texto}}
+{{post.texto |linebreaks }}
 <br/><br/>
 <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
 {% endblock %}

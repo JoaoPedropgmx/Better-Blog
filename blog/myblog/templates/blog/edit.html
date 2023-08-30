@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-
+{% if user.is_authenticated %}
 <h1> Editar </h1>
 <br/><br/>
     <div class="form-group">
@@ -15,4 +15,7 @@
             <button type="submit" class="save btn btn-secondary">Editar</button>
         </form>
     </div>
+{% else %}
+Você não tem Permissão para realizar essa ação!
+{% endif %}
 {% endblock %}
