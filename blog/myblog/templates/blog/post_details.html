@@ -6,19 +6,45 @@
 
 
 {% block content %}
-<h1>{{post.titulo}}</h1>
-<small>Publicado: {{ post.data_publicacao }}
+    <h1>{{post.titulo}}</h1>
+    <small>Publicado: {{ post.data_publicacao }}
+        {% if user.is_authenticated %}
+            {% if user.id == post.autor.id %}
+            - <a class= "btn btn-secondary btn-sm" href="{% url 'editar_post' post.pk %}">Editar</a> - 
+            <a class="btn btn-secondary btn-sm" href="{% url 'deletar_post' post.pk %}">Deletar</a><br/>
+            {% endif %}
+        {% endif %}
+        <brl/>
+        Por: {{post.autor.first_name}} {{post.autor.last_name}}
+    </small><br/>
+    <hr>
+    <br/>
+    {{post.texto |linebreaks }}
+    <br/><br/>
+    <hr>
+    <br/>
     {% if user.is_authenticated %}
-     - <a href="{% url 'editar_post' post.pk %}">Editar</a> - 
-    <a href="{% url 'deletar_post' post.pk %}">Deletar</a><br/>
+        {% if liked == False %}
+            <form action = "{% url 'like_post' post.pk %}" method="POST">
+                {% csrf_token %}
+                <!-- dois jeitos: -->
+                <!-- <button type="submit", name="post_id", value="{{ post.id }}", 
+                class="btn btn-info btn-sm">Like: {{ post.likes.count }}</button>  -->
+                <button type="submit" name="post_id" value="{{ post.id }}" class="btn 
+                {% if user in post.likes.all %}btn-primary{% else %}
+                btn-outline-primary{% endif %} btn-sm">Likes {{ post.likes.count }}</button>
+            </form>
+        {% else %}
+            <form action = "{% url 'like_post' post.pk %}" method="POST">
+                {% csrf_token %}
+                <!-- dois jeitos: -->
+                <!-- <button type="submit", name="post_id", value="{{ post.id }}", 
+                class="btn btn-danger btn-sm">Dislike: {{ post.likes.count }}</button>  -->
+                <button type="submit" name="post_id" value="{{ post.id }}" class="btn 
+                {% if user in post.likes.all %}btn-danger{% else %}
+                btn-outline-primary{% endif %} btn-sm">Dislike {{ post.likes.count }}</button>
+            </form>
+        {% endif %}
     {% endif %}
-    <brl/>
-    Por: {{post.autor.first_name}} {{post.autor.last_name}}
-</small><br/>
-<hr>
-<br/>
-{{post.texto |linebreaks }}
-<br/><br/>
-<a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
 {% endblock %}
 

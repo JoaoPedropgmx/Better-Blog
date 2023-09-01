@@ -6,16 +6,23 @@
 
 {% block content %}
 
-
-<br/><br/>
-<h3>Deletar: {{post.titulo}}</h3>
-</br>
-    <div class="form-group">
-        <form method="POST">
-            {% csrf_token %}
-            <strong> Tem Certeza? </strong></br>
-        </br>
-            <button type="submit" class="save btn btn-secondary">Deletar</button>
-        </form>
-    </div>
+{% if user.is_authenticated %}
+    {% if user.id == post.autor.id %}
+    <br/><br/>
+    <h3>Deletar: {{post.titulo}}</h3>
+    </br>
+        <div class="form-group">
+            <form method="POST">
+                {% csrf_token %}
+                <strong> Tem Certeza? </strong></br>
+            </br>
+                <button type="submit" class="save btn btn-secondary">Deletar</button>
+            </form>
+        </div>
+    {% else %}
+        Você não tem Permissão para realizar essa ação!
+    {% endif %}
+{% else %}
+Você não tem Permissão para realizar essa ação!
+{% endif %}      
 {% endblock %}

@@ -6,15 +6,19 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<h1> Editar </h1>
-<br/><br/>
-    <div class="form-group">
-        <form method="POST">
-            {% csrf_token %}
-            {{form.as_p }}
-            <button type="submit" class="save btn btn-secondary">Editar</button>
-        </form>
-    </div>
+    {% if user.id == post.autor.id %}
+    <h1> Editar </h1>
+    <br/><br/>
+        <div class="form-group">
+            <form method="POST">
+                {% csrf_token %}
+                {{form.as_p }}
+                <button type="submit" class="save btn btn-secondary">Editar</button>
+            </form>
+        </div>
+    {% else %}
+        Você não tem Permissão para realizar essa ação!
+    {% endif %}    
 {% else %}
 Você não tem Permissão para realizar essa ação!
 {% endif %}

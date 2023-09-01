@@ -21,6 +21,10 @@ class Post(models.Model):
     data_criacao = models.DateTimeField(default=timezone.now)
     data_publicacao = models.DateTimeField(blank=True, null=True, auto_now_add=timezone.now)
     categoria = models.CharField(max_length=255, default="Nenhuma")
+    likes = models.ManyToManyField(User, related_name='blog_post')
+
+    def total_likes(self):
+        return self.likes.count()
 
     def get_absolute_url(self):
         return reverse("post-details", kwargs={"pk": self.pk})
